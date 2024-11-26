@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <menuitem id="inventario_menu_root"
+              name="Módulo de Inventario"
+              web_icon="inventario,static/description/icon.png"
+              sequence="10"/>
+        <menuitem id="productos_menu"
+                  name="Registros"
+                  parent="inventario_menu_root"
+                  sequence="10"/>
+        <menuitem id="reportes_menu"
+                  name="Reportes"
+                  parent="inventario_menu_root"
+                  sequence="40"/>
+</odoo>

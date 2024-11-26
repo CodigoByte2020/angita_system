@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="ajustes_inventario_view_tree" model="ir.ui.view">
+        <field name="name">ajustes.inventario.view.tree</field>
+        <field name="model">ajustes.inventario</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="user_id"/>
+                <field name="fecha"/>
+                <field name="state"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="ajustes_inventario_view_form" model="ir.ui.view">
+        <field name="name">ajustes.inventario.view.form</field>
+        <field name="model">ajustes.inventario</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+<!--                    <button name="action_set_confirm" type="object" string="Confirmar" class="btn btn-primary"-->
+<!--                            invisible="state, '=', 'confirmed'" readonly="state, '=', 'confirmed'"/>-->
+                    <button name="action_set_confirm" type="object" string="Confirmar" class="btn btn-primary"/>
+                    <field name="state" widget="statusbar" statusbar_visible="pending,confirmed"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="user_id"/>
+                        </group>
+                        <group>
+                            <field name="fecha"/>
+                        </group>
+                    </group>
+                    <separator string="Detalles"/>
+                    <field name="detalle_ajuste_inventario_ids" context="{'default_ajuste_inventario_id': id}">
+                        <list editable="bottom">
+                            <field name="ajuste_inventario_id" invisible="1"/>
+                            <field name="producto_id" options="{'no_create': True, 'no_open': True, 'no_edit': True}"/>
+                            <field name="cantidad"/>
+                        </list>
+                    </field>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="ajustes_inventario_action" model="ir.actions.act_window">
+        <field name="name">Ajustes de Inventario</field>
+        <field name="res_model">ajustes.inventario</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="ajustes_inventario_menu"
+              name="Ajustes de Inventario"
+              action="ajustes_inventario_action"
+              sequence="30"
+              parent="inventario_menu_root"
+              groups="estructura_base.estructura_base_group_administrador"/>
+</odoo>

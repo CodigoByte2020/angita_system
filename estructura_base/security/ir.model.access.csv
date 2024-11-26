@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+estructura_base.access_base_persona,access_base_persona,estructura_base.model_base_persona,base.group_user,1,1,1,1
+# estructura_base.access_base_producto,access_base_producto,estructura_base.model_base_producto,base.group_user,1,1,1,1
+
+access_base_producto_administrador,access_base_producto,model_base_producto,estructura_base_group_administrador,1,1,1,1
+access_base_producto_vendedor,access_base_producto,model_base_producto,estructura_base_group_vendedor,0,1,0,0

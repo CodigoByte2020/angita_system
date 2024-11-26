@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+inventario.access_base_producto,access_base_producto,inventario.model_base_producto,base.group_user,1,1,1,1
+inventario.access_categoria_producto,access_categoria_producto,inventario.model_categoria_producto,base.group_user,1,1,1,1
+inventario.access_movimientos,access_movimientos,inventario.model_movimientos,base.group_user,1,1,1,1
+inventario.access_ajustes_inventario,access_ajustes_inventario,inventario.model_ajustes_inventario,base.group_user,1,1,1,1
+inventario.access_detalle_ajustes_inventario,access_detalle_ajustes_inventario,inventario.model_detalle_ajustes_inventario,base.group_user,1,1,1,1

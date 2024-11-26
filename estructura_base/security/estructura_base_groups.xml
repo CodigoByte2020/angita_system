@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <!-- CATEGORIES -->
+    <record id="module_category_estructura_base" model="ir.module.category">
+        <field name="name">ANGITA SYSTEM</field>
+        <field name="sequence">10</field>
+    </record>
+
+    <record id="module_category_estructura_base_groups" model="ir.module.category">
+        <field name="name">Ventas/Inventario</field>
+        <field name="parent_id" ref="module_category_estructura_base"/>
+        <field name="description">Para administrar privilegios de los usuarios.</field>
+        <field name="sequence">10</field>
+    </record>
+
+    <!-- GROUPS -->
+    <record id="estructura_base_group_vendedor" model="res.groups">
+        <field name="name">Vendedor</field>
+        <field name="category_id" ref="module_category_estructura_base_groups"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+    <record id="estructura_base_group_administrador" model="res.groups">
+        <field name="name">Administrador</field>
+        <field name="category_id" ref="module_category_estructura_base_groups"/>
+        <field name="implied_ids" eval="[(4, ref('estructura_base_group_vendedor'))]"/>
+        <field name="users" eval="[(4, ref('base.user_admin')),(4, ref('base.user_root'))]"/>
+    </record>
+</odoo>
