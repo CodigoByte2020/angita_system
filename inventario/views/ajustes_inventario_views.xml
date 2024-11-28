@@ -19,9 +19,8 @@
         <field name="arch" type="xml">
             <form>
                 <header>
-<!--                    <button name="action_set_confirm" type="object" string="Confirmar" class="btn btn-primary"-->
-<!--                            invisible="state, '=', 'confirmed'" readonly="state, '=', 'confirmed'"/>-->
-                    <button name="action_set_confirm" type="object" string="Confirmar" class="btn btn-primary"/>
+                    <button name="action_set_confirm" type="object" string="Confirmar" class="btn btn-primary"
+                            invisible="state == 'confirmed'"/>
                     <field name="state" widget="statusbar" statusbar_visible="pending,confirmed"/>
                 </header>
                 <sheet>
@@ -35,7 +34,8 @@
                         </group>
                     </group>
                     <separator string="Detalles"/>
-                    <field name="detalle_ajuste_inventario_ids" context="{'default_ajuste_inventario_id': id}">
+                    <field name="detalle_ajuste_inventario_ids" context="{'default_ajuste_inventario_id': id}"
+                           readonly="state == 'confirmed'">
                         <list editable="bottom">
                             <field name="ajuste_inventario_id" invisible="1"/>
                             <field name="producto_id" options="{'no_create': True, 'no_open': True, 'no_edit': True}"/>

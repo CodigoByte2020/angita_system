@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="clientes_action" model="ir.actions.act_window">
+        <field name="name">Cliente</field>
+        <field name="res_model">base.persona</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{'default_rango_cliente': 1}</field>
+        <field name="domain">[('rango_cliente', '=', 1)]</field>
+    </record>
+
+    <menuitem id="clientes_menu"
+              name="Cliente"
+              action="clientes_action"
+              sequence="20"
+              parent="ventas_menu"/>
+</odoo>

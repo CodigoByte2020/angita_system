@@ -8,7 +8,7 @@ class Producto(models.Model):
     movimiento_ids = fields.One2many('movimientos', 'producto_id')
     stock = fields.Float(string='Stock', compute='_compute_stock', store=True, aggregator=None)  # CHANGE
 
-    @api.depends('movimiento_ids.total')  # REVIEW THIS FUNCTION
+    @api.depends('movimiento_ids.total')
     def _compute_stock(self):
         for rec in self:
             product = self.env['movimientos'].search([('producto_id', '=', rec.id)], order='fecha DESC', limit=1)

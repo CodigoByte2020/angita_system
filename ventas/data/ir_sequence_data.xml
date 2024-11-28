@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="ventas_sequence" model="ir.sequence">
+        <field name="name">Secuencia de Ventas</field>
+        <field name="code">ventas</field>
+        <field name="prefix">VENTA-</field>
+        <field name="padding">8</field>
+        <field name="company_id" eval="False"/>
+    </record>
+</odoo>

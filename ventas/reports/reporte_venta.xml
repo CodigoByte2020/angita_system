@@ -1,0 +1,139 @@
+<odoo>
+    <data>
+        <template id="template_reporte_venta">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-set="grouped_sales_detail" t-value="o._get_sales_detail()"/>
+                    <t t-foreach="grouped_sales_detail" t-as="group">
+                        <t t-set="cliente" t-value="list(group.keys())[0]"/>
+                        <t t-set="sales_detail" t-value="list(group.values())[0]"/>
+                        <t t-set="totals" t-value="o._get_totals(sales_detail)"/>
+                        <t t-call="web.basic_layout">
+                            <div class="page">
+                                <div class="row">
+                                    <div class="col-12"
+                                         style="color: #885afd; font-size: 28px; letter-spacing: 2px; margin-top: 18px; margin-bottom: 14px;">
+                                        <strong>REPORTE DE VENTA</strong>
+                                    </div>
+                                </div>
+                                <div class="row" style="color:#272d3b; font-weight: 400;">
+                                    <div class="col-6">
+                                        <strong t-if="o.type_report == 'personal'">
+                                            CLIENTE:
+                                            <span t-esc="env['base.persona'].search([('rango_cliente', '=', 1), ('numero_documento', '=', o.document_number)]).name"/>
+                                        </strong>
+                                        <strong t-else="">
+                                            TODOS LOS CLIENTES
+                                            <span t-esc="cliente"/>
+                                        </strong>
+                                    </div>
+                                    <div class="col-6">
+                                        <strong t-if="o.range == 'month'">
+                                            <span t-field="o.month"/>/
+                                            <span t-field="o.year"/>
+                                        </strong>
+                                        <strong t-else="">
+                                            <span t-field="o.date_from"/>
+                                            Al
+                                            <span t-field="o.date_to"/>
+                                        </strong>
+                                    </div>
+                                </div>
+                                <table class="data-table"
+                                       style="margin-top:15px; border-collapse: collapse; width: 100%; font-size: 12px;">
+                                    <tr>
+                                        <th style="width: 14%; border-right: 2px solid #fff; color: #fff; background: #272d3b; padding: 10px;">
+                                            <strong>RESPONSABLE</strong>
+                                        </th>
+                                        <th style="width: 14%; text-align: center; color: #fff; border-right: 2px solid #fff; background: #272d3b; vertical-align: middle; padding: 10px 5px;">
+                                            <strong>TIPO VENTA</strong>
+                                        </th>
+                                        <th style="width: 14%; text-align: center; color: #fff; border-right: 2px solid #fff; background: #272d3b; vertical-align: middle; padding: 10px 5px;">
+                                            <strong>FECHA</strong>
+                                        </th>
+                                        <th style="width: 14%; text-align: center; color: #fff; border-right: 2px solid #fff; background: #272d3b; vertical-align: middle; padding: 10px 5px;">
+                                            <strong>PRODUCTO</strong>
+                                        </th>
+                                        <th style="width: 14%; text-align: center; color: #fff; border-right: 2px solid #fff; background: #272d3b; vertical-align: middle; padding: 10px 5px;">
+                                            <strong>CANTIDAD</strong>
+                                        </th>
+                                        <th style="width: 14%; text-align: center; color: #fff; border-right: 2px solid #fff; background: #272d3b; vertical-align: middle; padding: 10px 5px;">
+                                            <strong>P. UNIT.</strong>
+                                        </th>
+                                        <th style="width: 14%; text-align: center; color: #fff; border-right: 2px solid #fff; background: #272d3b; vertical-align: middle; padding: 10px 5px;">
+                                            <strong>SUBTOTAL</strong>
+                                        </th>
+                                    </tr>
+                                    <t t-set="count" t-value="1"/>
+                                    <t t-foreach="sales_detail" t-as="line">
+                                        <t t-if="count % 2 == 0">
+                                            <t t-set="back" t-value="'background: #cecece;'"/>
+                                        </t>
+                                        <t t-else="">
+                                            <t t-set="back" t-value="'background: #ffffff;'"/>
+                                        </t>
+                                        <tr t-att-style="back">
+                                            <td style="padding: 10px 5px;">
+                                                <span t-field="line.venta_id.user_id"/>
+                                            </td>
+                                            <td style="text-align: center; vertical-align: middle; padding: 10px 5px;">
+                                                <span t-field="line.venta_id.tipo_venta"/>
+                                            </td>
+                                            <td style="text-align: center; vertical-align: middle; padding: 10px 30px;">
+                                                <span t-field="line.venta_id.fecha"/>
+                                            </td>
+                                            <td style="padding: 10px 5px;">
+                                                <span t-field="line.producto_id"/>
+                                            </td>
+                                            <td style="text-align: center; vertical-align: middle; padding: 10px 5px;">
+                                                <span t-field="line.cantidad"/>
+                                            </td>
+                                            <td style="text-align: center; vertical-align: middle; padding: 10px 5px;">
+                                                <span t-field="line.precio_venta" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                            </td>
+                                            <td style="text-align: center; vertical-align: middle; padding: 10px 5px;">
+                                                <span t-field="line.subtotal" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                            </td>
+                                        </tr>
+                                        <t t-set="count" t-value="count + 1"/>
+                                    </t>
+
+                                    <tr style="border-top: 3px solid #000;">
+                                        <td colspan="5" rowspan="5"/>
+                                        <td style="text-align: center; border-bottom: solid #cecece 1px;">Subtotal</td>
+                                        <td style="text-align: center; border-bottom: solid #cecece 1px; padding: 20px 0px;">
+                                            <t t-esc="totals['subtotal']" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align: center; border-bottom: solid #cecece 1px;">IGV</td>
+                                        <td style="text-align: center; border-bottom: solid #cecece 1px; padding: 20px 0px;">
+                                            <t t-esc="totals['amount_tax']" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align: center; border-bottom: 3px solid #000;">Total</td>
+                                        <td style="text-align: center; border-bottom: 3px solid #000; padding: 20px 0px;">
+                                            <t t-esc="totals['total']" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </t>
+                    </t>
+                </t>
+            </t>
+        </template>
+
+        <record id="reporte_venta_pdf" model="ir.actions.report">
+            <field name="name">Imprimir reporte de ventas</field>
+            <field name="model">reporte.venta.wizard</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">ventas.template_reporte_venta</field>
+            <field name="report_file">ventas.template_reporte_venta</field>
+            <field name="print_report_name">'Reporte de venta - %s' % object.type_report</field>
+            <field name="binding_model_id" ref="model_reporte_venta_wizard"/>
+            <field name="paperformat_id" ref="custom_paperformat"/>
+        </record>
+    </data>
+</odoo>

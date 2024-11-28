@@ -30,15 +30,17 @@
         <field name="model">base.persona</field>
         <field name="arch" type="xml">
             <form>
+                <header>
+                    <button name="consult_data" type="object" string="Consultar datos" class="btn btn-primary"/>
+                </header>
                 <sheet>
                     <group>
                         <group>
                             <field name="tipo_documento"/>
                             <field name="numero_documento"/>
                             <field name="name"/>
-                            <!-- CHANGE -->
-                            <field name="estado" invisible="tipo_documento, '!=', 'ruc'"/><!-- REVIEW -->
-                            <field name="condicion" invisible="tipo_documento, '!=', 'ruc'"/><!-- REVIEW -->
+                            <field name="estado" invisible="tipo_documento != 'ruc'"/>
+                            <field name="condicion" invisible="tipo_documento != 'ruc'"/>
                         </group>
                         <group>
                             <field name="direccion"/>

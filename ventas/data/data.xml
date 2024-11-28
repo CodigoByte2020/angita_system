@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo noupdate="1">
+    <record id="amount_igv" model="ir.config_parameter">
+        <field name="key">igv_key</field>
+        <field name="value">18</field>
+    </record>
+</odoo>
