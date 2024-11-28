@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+ventas.access_ventas,access_ventas,ventas.model_ventas,base.group_user,1,1,1,1
+ventas.access_detalle_ventas,access_detalle_ventas,ventas.model_detalle_ventas,base.group_user,1,1,1,1
+ventas.access_sales_price_history,access_sales_price_history,ventas.model_sales_price_history,base.group_user,1,1,1,1
+ventas.access_reporte_venta_wizard,access_reporte_venta_wizard,ventas.model_reporte_venta_wizard,base.group_user,1,1,1,1

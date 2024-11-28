@@ -30,6 +30,9 @@
         <field name="model">base.persona</field>
         <field name="arch" type="xml">
             <form>
+                <header>
+                    <button name="consult_data" type="object" string="Consultar datos" class="btn btn-primary"/>
+                </header>
                 <sheet>
                     <group>
                         <group>

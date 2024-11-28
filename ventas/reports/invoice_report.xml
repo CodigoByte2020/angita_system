@@ -1,0 +1,107 @@
+<odoo>
+    <data>
+        <template id="template_invoice_report">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="web.basic_layout">
+                        <div class="page">
+                            <div class="row">
+                                <div class="col-3 text-center">
+                                    <img t-if="o.company_id.logo" t-att-src="image_data_uri(o.company_id.logo)" style="max-width: 90%;" alt="Company Logo"/>
+                                </div>
+                                <div class="col-6 text-center">
+                                    <!-- *************************************************************************** -->
+<!--                                    DATOS DEL EMISOR ELECTRÓNICO Y DEL DOCUMENTO-->
+                                    <h1 t-field="o.company_id.name"/><br/>
+                                    <span t-field="o.company_id.phone"/> - <span t-field="o.company_id.email"/><br/>
+                                    <span t-field="o.company_id.street"/><br/>
+                                    <span t-field="o.company_id.city"/> - <span t-field="o.company_id.country_id.name"/>
+                                    <!-- *************************************************************************** -->
+                                </div>
+                                <div class="col-3 text-center" style="border: solid black 2px;">
+                                    <br/>
+                                    R.U.C. <span t-field="o.company_id.vat"/><br/>
+                                    <span t-field="o.type_document"/><br/>
+                                    Electrónica<br/>
+                                    <span t-field="o.name"/><br/>
+                                </div>
+                            </div>
+                            <br/>
+                            <br/>
+                            <div class="row">
+                                <div class="col-12">
+                                    <!-- *************************************************************************** -->
+                                    <!-- DATOS DEL ADQUIRIENTE O USUARIO -->
+                                    <span>Señor(es): </span><span t-field="o.cliente_id.name"/><br/>
+                                    <span t-esc="o.cliente_id.get_type_document_report()"/>: <span t-field="o.cliente_id.numero_documento"/><br/>
+                                    Dirección: <span t-field="o.cliente_id.direccion"/><br/>
+                                    <!-- *************************************************************************** -->
+                                    <div class="row">
+                                        <div class="col-6">Fecha de emisión: <span t-field="o.fecha"/></div>
+                                        <div class="col-6">MONEDA: <span t-field="o.currency_id.name"/></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br/>
+                            <br/>
+                            <table class="table table-striped" style="width: 100%;">
+                                <thead class="thead-dark">
+                                    <tr class="bg-primary text-warning text-center font-weight-bold">
+                                        <th style="width: 15%;">Código</th>
+                                        <th style="width: 15%;">Cantidad</th>
+                                        <th style="width: 15%;">U. Med.</th>
+                                        <th style="width: 25%;">Descripción</th>
+                                        <th style="width: 15%;">P. Unit</th>
+                                        <th style="width: 15%;">Subtotal</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="o.detalle_ventas_ids" t-as="line">
+                                        <tr>
+                                            <td class="text-left"><span t-field="line.producto_id.code"/></td>
+                                            <td class="text-right"><span t-field="line.cantidad"/></td>
+                                            <td class="text-left"><span t-field="line.producto_id.unidad_medida"/></td>
+                                            <td class="text-left"><span t-field="line.producto_id.name"/></td>
+                                            <td class="text-right"><span t-field="line.precio_venta" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/></td>
+                                            <td class="text-right"><span t-field="line.subtotal" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/></td>
+                                        </tr>
+                                    </t>
+                                    <tr>
+                                        <td colspan="4" rowspan="4" class="bg-white"/>
+                                        <td class="text-right" style="border-left: solid black 1px; border-top: solid black 1px;">Ope. Gravadas:</td>
+                                        <td class="text-right" style="border-right: solid black 1px; border-top: solid black 1px;"><span t-field="o.amount_untaxed" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-right" style="border-left: solid black 1px;">IGV 18%</td>
+                                        <td class="text-right" style="border-right: solid black 1px;"><span t-field="o.amount_tax" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-right" style="border-left: solid black 1px; border-bottom: solid black 1px;">Importe Total</td>
+                                        <td class="text-right" style="border-right: solid black 1px; border-bottom: solid black 1px;"><span t-field="o.total" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="footer" style="border-top: solid black 1px;">
+                            <div class="row">
+                                <div class="col-12 text-center" style="font-size: 13px;">
+                                    Revise la conformidad de su mercadería en el momento de la recepción, una vez aceptada no se aceptan cambios ni devoluciones.
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+
+        <record id="invoice_report" model="ir.actions.report">
+            <field name="name">Reporte - Factura</field>
+            <field name="model">ventas</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">ventas.template_invoice_report</field>
+            <field name="print_report_name">'Factura - %s' % object.name</field>
+            <field name="binding_model_id" ref="model_ventas"/>
+            <field name="paperformat_id" ref="paperformat_invoices"/>
+        </record>
+    </data>
+</odoo>

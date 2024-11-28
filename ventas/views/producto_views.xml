@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="producto_view_form_inherit" model="ir.ui.view">
+        <field name="name">producto.view.form.inherit</field>
+        <field name="model">base.producto</field>
+        <field name="inherit_id" ref="inventario.producto_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='details']" position="after">
+                <page name="sales_price_history" string="Historial de Precios de venta">
+                    <field name="sales_price_history_ids" readonly="1">
+                        <list>
+                            <field name="old_price"/>
+                            <field name="new_price"/>
+                            <field name="modified_date"/>
+                        </list>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

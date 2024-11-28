@@ -37,11 +37,6 @@ class Persona(models.Model):
         ('name_uniq', 'unique(numero_documento)', 'Ya existe un Cliente con el Número de documento ingresado. !!!'),
     ]
 
-    @api.model_create_multi  # CHANGE
-    def create(self, vals_list):
-        self.consult_data(vals_list)
-        return super(Persona, self).create(vals_list)
-
     @api.onchange('tipo_documento')
     def _onchange_tipo_documento(self):
         if self.tipo_documento:
@@ -68,18 +63,16 @@ class Persona(models.Model):
         for persona in self:
             persona.display_name = f'{persona.name} - {persona.numero_documento}'
 
-    def consult_data(self, values):
+    def consult_data(self):
         """
         Método para consultar datos de las personas en la siguiente url https://apis.net.pe/
-        :param values: parámetros para consultar en la url
-        :type values: dict
+        :param None: parámetros para consultar en la url
+        :type None: None
         :return: No retorna ningún valor
         :rtype: None
         """
-        tipo_documento = values.get("tipo_documento", self.tipo_documento)
-        numero_documento = values.get("numero_documento", self.numero_documento)
-        url = f'https://api.apis.net.pe/v1/{tipo_documento}'
-        args = {'numero': numero_documento}
+        url = f'https://api.apis.net.pe/v1/{self.tipo_documento}'
+        args = {'numero': self.numero_documento}
         # TRY: CÓDIGO SUCEPTIBLE A ERROR
         try:
             response = requests.get(url=url, params=args)
@@ -96,24 +89,20 @@ class Persona(models.Model):
                 provincia = response_json.get('provincia', '')
                 estado = response_json.get('estado', '')
                 condicion = response_json.get('condicion', '')
-                values.update({
+                self.write({
                     'name': nombre,
                     'direccion': direccion and provincia and f'{direccion} {provincia} - PERÚ',
                     'estado': estado,
                     'condicion': condicion
                 })
             elif response.status_code == 422:
-                raise ValidationError(f'El Número de documento {numero_documento} no cumple con las reglas de '
+                raise ValidationError(f'El Número de documento {self.numero_documento} no cumple con las reglas de '
                                       f'validación')
             elif response.status_code == 404:
-                raise ValidationError(f'El Número de documento {numero_documento} no existe')
+                raise ValidationError(f'El Número de documento {self.numero_documento} no existe')
 
     def get_type_document_report(self):
         type_document = dict(self._fields['tipo_documento'].selection)
         for key, value in type_document.items():
             if key == self.tipo_documento:
                 return key.upper()
-
-    def write(self, values):
-        self.consult_data(values)
-        return super(Persona, self).write(values)

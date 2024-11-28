@@ -15,12 +15,10 @@ class AjustesInventario(models.Model):
     name = fields.Char(string='Nombre', required=True)
     user_id = fields.Many2one('res.users', default=lambda self: self.env.user.id, string='Responsable', readonly=True)
     state = fields.Selection(STATE_SELECTION, default=PENDIENTE, string='Estado')
-    # REVIEW
     detalle_ajuste_inventario_ids = fields.One2many(
-        'detalle.ajustes.inventario',
-        'ajuste_inventario_id',
-        string='Detalles',
-        # states={CONFIRMADO: [('readonly', True)]}  # CHANGE
+        comodel_name='detalle.ajustes.inventario',
+        inverse_name='ajuste_inventario_id',
+        string='Detalles'
     )
     fecha = fields.Date(default=fields.Date.today(), string='Fecha', readonly=True)
 

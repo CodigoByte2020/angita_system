@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="ventas_view_tree" model="ir.ui.view">
+        <field name="name">ventas.view.tree</field>
+        <field name="model">ventas</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="cliente_id"/>
+                <field name="fecha"/>
+                <field name="tipo_venta"/>
+                <field name="total"/>
+                <field name="user_id"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="ventas_view_form" model="ir.ui.view">
+        <field name="name">ventas.view.form</field>
+        <field name="model">ventas</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_set_confirm" type="object" string="Confirmar" class="btn btn-primary"
+                            invisible="state != 'pending'"/>
+                    <button name="action_set_cancel" type="object" string="Cancelar" class="btn btn-primary"
+                            invisible="state != 'confirmed'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="pending,confirmed,cancelled"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="cliente_id" options="{'no_open': True, 'no_create': True, 'no_edit': True}"/>
+                            <field name="user_id"/>
+                            <field name="tipo_venta" invisible="1"/>
+                            <field name="type_document"/>
+                            <field name="currency_id" options="{'no_open': True, 'no_create': True, 'no_edit': True}"/>
+                        </group>
+                        <group>
+                            <field name="fecha"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Productos">
+                            <field name="detalle_ventas_ids" context="{'default_venta_id': id}">
+                                <list editable="bottom">
+                                    <field name="venta_id" invisible="1"/>
+                                    <field name="currency_id" invisible="1"/>
+                                    <field name="producto_id" options="{'no_create': True, 'no_open': True, 'no_edit': True}"/>
+                                    <field name="cantidad"/>
+                                    <field name="precio_venta" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                    <field name="subtotal" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                </list>
+                            </field>
+                            <group class="oe_subtotal_footer">
+                                <div class="oe_subtotal_footer_separator oe_inline o_td_label">
+                                    <label for="total"/>
+                                </div>
+                                <field name="total" nolabel="1" class="oe_subtotal_footer_separator" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                            </group>
+                            <field name="comentarios" nolabel="1" placeholder="Términos y condiciones ..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="ventas_action" model="ir.actions.act_window">
+        <field name="name">Venta</field>
+        <field name="res_model">ventas</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="ventas_ventas_menu"
+              name="Venta"
+              action="ventas_action"
+              sequence="10"
+              parent="ventas_menu"/>
+</odoo>
